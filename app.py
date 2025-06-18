@@ -18,6 +18,8 @@ comfyui_image = (
     .run_commands(
         "cd /root && git clone https://github.com/comfyanonymous/ComfyUI.git",
         "cd /root/ComfyUI && pip install -r requirements.txt",
+        # Install OpenCV headless for comfyui_controlnet_aux compatibility
+        "pip install opencv-python-headless",
         # --- Install Custom Nodes Here ---
         # Use `git clone` to add any custom nodes you want.
         # Make sure they go into the `custom_nodes` directory.
