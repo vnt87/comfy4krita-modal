@@ -64,6 +64,13 @@ MODELS = {
         "filenames": ["sigclip_vision_patch14_384.safetensors"],
         "target_dir": "clip_vision"
     },
+    "clip-vision-vit-h": {
+        "repo_id": "h94/IP-Adapter",
+        "filenames": ["models/image_encoder/model.safetensors"],
+        "target_dir": "clip_vision",
+        "direct_url": "https://huggingface.co/h94/IP-Adapter/resolve/main/models/image_encoder/model.safetensors",
+        "custom_filename": "clip-vision_vit-h.safetensors"
+    },
 
     # Upscale Models
     "nmkd-superscale-sp": {
@@ -103,6 +110,12 @@ MODELS = {
         "filenames": ["sdxl_models/ip-adapter_sdxl_vit-h.safetensors"],
         "target_dir": "ipadapter"
     },
+    "ip-adapter-sd15": {
+        "repo_id": "h94/IP-Adapter",
+        "filenames": ["models/ip-adapter_sd15.safetensors"],
+        "target_dir": "ipadapter",
+        "direct_url": "https://huggingface.co/h94/IP-Adapter/resolve/main/models/ip-adapter_sd15.safetensors"
+    },
 
     # LoRA Models
     "hyper-sdxl-8steps-cfg": {
@@ -114,6 +127,12 @@ MODELS = {
         "repo_id": "h94/IP-Adapter-FaceID",
         "filenames": ["ip-adapter-faceid-plusv2_sdxl.bin"],
         "target_dir": "loras"
+    },
+    "hyper-sd15-8steps-cfg": {
+        "repo_id": "ByteDance/Hyper-SD",
+        "filenames": ["Hyper-SD15-8steps-CFG-lora.safetensors"],
+        "target_dir": "loras",
+        "direct_url": "https://huggingface.co/ByteDance/Hyper-SD/resolve/main/Hyper-SD15-8steps-CFG-lora.safetensors"
     },
 
     # Inpaint Models
@@ -159,6 +178,18 @@ MODELS = {
         "filenames": ["mistoline_flux.dev_v1.safetensors"],
         "target_dir": "controlnet"
     },
+    "control-v11p-sd15-inpaint": {
+        "repo_id": "comfyanonymous/ControlNet-v1-1_fp16_safetensors",
+        "filenames": ["control_v11p_sd15_inpaint_fp16.safetensors"],
+        "target_dir": "controlnet",
+        "direct_url": "https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/resolve/main/control_v11p_sd15_inpaint_fp16.safetensors"
+    },
+    "control-lora-rank128-v11f1e-sd15-tile": {
+        "repo_id": "comfyanonymous/ControlNet-v1-1_fp16_safetensors",
+        "filenames": ["control_lora_rank128_v11f1e_sd15_tile_fp16.safetensors"],
+        "target_dir": "controlnet",
+        "direct_url": "https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors/resolve/main/control_lora_rank128_v11f1e_sd15_tile_fp16.safetensors"
+    },
 
     # Style Models
     "flux1-redux-dev": {
@@ -188,6 +219,24 @@ MODELS = {
         "repo_id": "Lykon/dreamshaper-xl-v2-turbo",
         "filenames": ["DreamShaperXL_Turbo_v2.safetensors"],
         "target_dir": "checkpoints"
+    },
+    "serenity-v21": {
+        "repo_id": "Acly/SD-Checkpoints",
+        "filenames": ["serenity_v21Safetensors.safetensors"],
+        "target_dir": "checkpoints",
+        "direct_url": "https://huggingface.co/Acly/SD-Checkpoints/resolve/main/serenity_v21Safetensors.safetensors"
+    },
+    "dreamshaper-8-pruned": {
+        "repo_id": "Lykon/DreamShaper",
+        "filenames": ["DreamShaper_8_pruned.safetensors"],
+        "target_dir": "checkpoints",
+        "direct_url": "https://huggingface.co/Lykon/DreamShaper/resolve/main/DreamShaper_8_pruned.safetensors"
+    },
+    "flat2DAnimerge-v45Sharp": {
+        "repo_id": "Acly/SD-Checkpoints",
+        "filenames": ["flat2DAnimerge_v45Sharp.safetensors"],
+        "target_dir": "checkpoints",
+        "direct_url": "https://huggingface.co/Acly/SD-Checkpoints/resolve/main/flat2DAnimerge_v45Sharp.safetensors"
     },
 }
 # --- End Configuration ---
@@ -228,8 +277,11 @@ def download_all_models():
         for filename in model_info["filenames"]:
             # Correctly handle nested paths from Hugging Face
             source_path = Path(filename)
-            # Use model_name as a prefix to ensure unique filenames
-            unique_filename = f"{model_name}_{source_path.name}"
+            # Use model_name as a prefix to ensure unique filenames, unless a custom filename is specified
+            if "custom_filename" in model_info:
+                unique_filename = model_info["custom_filename"]
+            else:
+                unique_filename = f"{model_name}_{source_path.name}"
             final_target_path = target_dir_path / unique_filename
             
             final_target_path.parent.mkdir(parents=True, exist_ok=True)

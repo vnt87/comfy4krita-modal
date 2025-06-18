@@ -98,6 +98,12 @@ This deployment includes a comprehensive set of models for various Stable Diffus
   *Source*: [misri/zavychromaxl_v80](https://huggingface.co/misri/zavychromaxl_v80)
 - **DreamShaper XL V2 Turbo** (`DreamShaperXL_Turbo_v2.safetensors`): A turbo version for faster generation with quality.  
   *Source*: [Lykon/dreamshaper-xl-v2-turbo](https://huggingface.co/Lykon/dreamshaper-xl-v2-turbo)
+- **Serenity V2.1** (`serenity_v21Safetensors.safetensors`): A checkpoint for high-quality image generation.  
+  *Source*: [Acly/SD-Checkpoints](https://huggingface.co/Acly/SD-Checkpoints)
+- **DreamShaper 8 Pruned** (`DreamShaper_8_pruned.safetensors`): A pruned version of DreamShaper for efficient generation.  
+  *Source*: [Lykon/DreamShaper](https://huggingface.co/Lykon/DreamShaper)
+- **Flat2DAnimerge V4.5 Sharp** (`flat2DAnimerge_v45Sharp.safetensors`): A model for 2D anime-style outputs with sharp details.  
+  *Source*: [Acly/SD-Checkpoints](https://huggingface.co/Acly/SD-Checkpoints)
 
 ### VAEs
 - **SDXL VAE** (`sdxl_vae.safetensors`): Improves color and detail in SDXL generations.  
@@ -114,6 +120,8 @@ This deployment includes a comprehensive set of models for various Stable Diffus
   *Source*: [h94/IP-Adapter](https://huggingface.co/h94/IP-Adapter)
 - **SigCLIP Vision 384** (`sigclip_vision_patch14_384.safetensors`): Specialized vision model for CLIP.  
   *Source*: [Comfy-Org/sigclip_vision_384](https://huggingface.co/Comfy-Org/sigclip_vision_384)
+- **CLIP Vision ViT-H** (`clip-vision_vit-h.safetensors`): Another variant of the image encoder for CLIP vision tasks.  
+  *Source*: [h94/IP-Adapter](https://huggingface.co/h94/IP-Adapter)
 
 ### Upscale Models
 - **NMKD Superscale SP** (`4x_NMKD-Superscale-SP_178000_G.pth`): For upscaling images.  
@@ -126,14 +134,18 @@ This deployment includes a comprehensive set of models for various Stable Diffus
   *Source*: [Acly/hat](https://huggingface.co/Acly/hat)
 
 ### IP Adapter Models
-- **IP-Adapter SDXL ViT-H** (`ip-adapter_sdxl_vit-h.safetensors`): For image prompt adaptation.  
+- **IP-Adapter SDXL ViT-H** (`ip-adapter_sdxl_vit-h.safetensors`): For image prompt adaptation with SDXL.  
+  *Source*: [h94/IP-Adapter](https://huggingface.co/h94/IP-Adapter)
+- **IP-Adapter SD 1.5** (`ip-adapter_sd15.safetensors`): For image prompt adaptation with SD 1.5.  
   *Source*: [h94/IP-Adapter](https://huggingface.co/h94/IP-Adapter)
 
 ### LoRA Models
-- **Hyper-SDXL 8steps CFG** (`Hyper-SDXL-8steps-CFG-lora.safetensors`): For faster generation.  
+- **Hyper-SDXL 8steps CFG** (`Hyper-SDXL-8steps-CFG-lora.safetensors`): For faster generation with SDXL.  
   *Source*: [ByteDance/Hyper-SD](https://huggingface.co/ByteDance/Hyper-SD)
 - **IP-Adapter FaceID PlusV2 SDXL** (`ip-adapter-faceid-plusv2_sdxl.bin`): For face recognition and adaptation.  
   *Source*: [h94/IP-Adapter-FaceID](https://huggingface.co/h94/IP-Adapter-FaceID)
+- **Hyper-SD15 8steps CFG** (`Hyper-SD15-8steps-CFG-lora.safetensors`): For faster generation with SD 1.5.  
+  *Source*: [ByteDance/Hyper-SD](https://huggingface.co/ByteDance/Hyper-SD)
 
 ### Inpaint Models
 - **Fooocus Inpaint Head and Patch** (`fooocus_inpaint_head.pth`, `inpaint_v26.fooocus.patch`): For inpainting tasks.  
@@ -142,14 +154,20 @@ This deployment includes a comprehensive set of models for various Stable Diffus
   *Source*: [Acly/MAT](https://huggingface.co/Acly/MAT)
 
 ### ControlNet Models
-- **ControlNet Union SDXL Promax** (`diffusion_pytorch_model_promax.safetensors`): Multi-purpose ControlNet.  
+- **ControlNet Union SDXL Promax** (`diffusion_pytorch_model_promax.safetensors`): Multi-purpose ControlNet for SDXL.  
   *Source*: [xinsir/controlnet-union-sdxl-1.0](https://huggingface.co/xinsir/controlnet-union-sdxl-1.0)
-- **ControlNet QRCode Monster** (`diffusion_pytorch_model.safetensors`): For QR code generation.  
+- **ControlNet QRCode Monster** (`diffusion_pytorch_model.safetensors`): For QR code generation with SDXL.  
   *Source*: [monster-labs/control_v1p_sdxl_qrcode_monster](https://huggingface.co/monster-labs/control_v1p_sdxl_qrcode_monster)
-- **Flux1-dev ControlNet Union Pro and Inpainting Beta** (`diffusion_pytorch_model.safetensors`): Advanced control models.  
-  *Source*: [ABDALLALSWAITI/FLUX.1-dev-ControlNet-Union-Pro-2.0-fp8](https://huggingface.co/ABDALLALSWAITI/FLUX.1-dev-ControlNet-Union-Pro-2.0-fp8) and [alimama-creative/FLUX.1-dev-Controlnet-Inpainting-Beta](https://huggingface.co/alimama-creative/FLUX.1-dev-Controlnet-Inpainting-Beta)
-- **MistoLine Flux.dev** (`mistoline_flux.dev_v1.safetensors`): Line art control.  
+- **Flux1-dev ControlNet Union Pro** (`diffusion_pytorch_model.safetensors`): Advanced control model for Flux1-dev.  
+  *Source*: [ABDALLALSWAITI/FLUX.1-dev-ControlNet-Union-Pro-2.0-fp8](https://huggingface.co/ABDALLALSWAITI/FLUX.1-dev-ControlNet-Union-Pro-2.0-fp8)
+- **Flux1-dev ControlNet Inpainting Beta** (`diffusion_pytorch_model.safetensors`): Inpainting control model for Flux1-dev.  
+  *Source*: [alimama-creative/FLUX.1-dev-Controlnet-Inpainting-Beta](https://huggingface.co/alimama-creative/FLUX.1-dev-Controlnet-Inpainting-Beta)
+- **MistoLine Flux.dev** (`mistoline_flux.dev_v1.safetensors`): Line art control for Flux.  
   *Source*: [TheMistoAI/MistoLine_Flux.dev](https://huggingface.co/TheMistoAI/MistoLine_Flux.dev)
+- **ControlNet V1.1p SD1.5 Inpaint** (`control_v11p_sd15_inpaint_fp16.safetensors`): For inpainting tasks with SD 1.5.  
+  *Source*: [comfyanonymous/ControlNet-v1-1_fp16_safetensors](https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors)
+- **ControlNet LoRA Rank128 V1.1f1e SD1.5 Tile** (`control_lora_rank128_v11f1e_sd15_tile_fp16.safetensors`): Tile control model for SD 1.5.  
+  *Source*: [comfyanonymous/ControlNet-v1-1_fp16_safetensors](https://huggingface.co/comfyanonymous/ControlNet-v1-1_fp16_safetensors)
 
 ### Style Models
 - **Flux1 Redux Dev** (`flux1-redux-dev.safetensors`): For stylistic outputs.  
