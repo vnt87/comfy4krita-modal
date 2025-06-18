@@ -23,7 +23,7 @@ Follow these steps to deploy ComfyUI on Modal:
    Clone this repository to your local machine or download the project files.
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/vnt87/comfy4krita-modal.git
    cd modal-comfy
    ```
 
