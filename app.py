@@ -9,6 +9,7 @@ import modal
 # Define the Modal resources
 app = modal.App(name="comfyui-app")
 volume = modal.Volume.from_name("comfyui-models-vol") # We are using the volume we created earlier
+custom_nodes_volume = modal.Volume.from_name("comfyui-custom-nodes-vol") # Volume for custom nodes
 
 # Define the environment image
 # This is the most important part: we are building a container with everything ComfyUI needs.
@@ -18,25 +19,16 @@ comfyui_image = (
     .run_commands(
         "cd /root && git clone https://github.com/comfyanonymous/ComfyUI.git",
         "cd /root/ComfyUI && pip install -r requirements.txt",
-        # Install OpenCV headless for comfyui_controlnet_aux compatibility
-        "pip install opencv-python-headless",
-        # --- Install Custom Nodes Here ---
-        # Use `git clone` to add any custom nodes you want.
-        # Make sure they go into the `custom_nodes` directory.
-        "cd /root/ComfyUI/custom_nodes && git clone https://github.com/ltdrdata/ComfyUI-Manager.git",
-        "cd /root/ComfyUI/custom_nodes && git clone https://github.com/Fannovel16/comfyui_controlnet_aux.git",
-        "cd /root/ComfyUI/custom_nodes && git clone https://github.com/cubiq/ComfyUI_IPAdapter_plus.git",
-        "cd /root/ComfyUI/custom_nodes && git clone https://github.com/Acly/comfyui-inpaint-nodes.git",
-        "cd /root/ComfyUI/custom_nodes && git clone https://github.com/Acly/comfyui-tooling-nodes.git",
-        # Ensure the models directory is empty to allow volume mounting
+        # Ensure the models and custom_nodes directories are empty to allow volume mounting
         "rm -rf /root/ComfyUI/models/*",
+        "rm -rf /root/ComfyUI/custom_nodes/*",
     )
 )
 
 @app.function(
     image=comfyui_image,
     gpu="any",  # Request a GPU. "any" is fine, or specify one like "L40S" for more power.
-    volumes={"/root/ComfyUI/models": volume}, # Mount the models volume to the correct path
+    volumes={"/root/ComfyUI/models": volume, "/root/ComfyUI/custom_nodes": custom_nodes_volume}, # Mount the volumes to the correct paths
     scaledown_window=300, # Keep the container alive for 5 minutes after last request
     max_containers=10, # Updated from concurrency_limit for maximum concurrent containers
 )

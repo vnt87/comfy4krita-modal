@@ -244,21 +244,23 @@ MODELS = {
 # Define the Modal resources
 app = modal.App(name="comfyui-model-downloader")
 volume = modal.Volume.from_name("comfyui-models-vol", create_if_missing=True)
+custom_nodes_volume = modal.Volume.from_name("comfyui-custom-nodes-vol", create_if_missing=True)
 
 # This is the image we'll use to run the download function.
 image = modal.Image.debian_slim(python_version="3.11").pip_install(
     "huggingface_hub",
     "requests"
-)
+).apt_install("git")
 
 # This is the function that will be executed on Modal.
 @app.function(
     image=image,
-    volumes={"/models": volume},
+    volumes={"/models": volume, "/custom_nodes": custom_nodes_volume},
     timeout=1800  # 30 minutes, downloading can be slow
 )
 def download_all_models():
     from huggingface_hub import hf_hub_download
+    import subprocess
     
     # Ensure requests and shutil are available when running on Modal
     try:
@@ -322,6 +324,52 @@ def download_all_models():
 
     print("All models have been downloaded.")
     volume.commit() # Save the changes to the volume
+    
+    # Install custom nodes
+    print("Starting custom nodes installation process...")
+    custom_nodes_path = Path("/custom_nodes")
+    custom_nodes_path.mkdir(parents=True, exist_ok=True)
+    
+    custom_node_repos = [
+        "https://github.com/ltdrdata/ComfyUI-Manager.git",
+        "https://github.com/Fannovel16/comfyui_controlnet_aux.git",
+        "https://github.com/cubiq/ComfyUI_IPAdapter_plus.git",
+        "https://github.com/Acly/comfyui-inpaint-nodes.git",
+        "https://github.com/Acly/comfyui-tooling-nodes.git",
+        "https://github.com/crystian/ComfyUI-Crystools.git",
+        "https://github.com/ltdrdata/ComfyUI-Impact-Pack.git",
+        "https://github.com/kijai/ComfyUI-SUPIR.git",
+        "https://github.com/yolain/ComfyUI-Easy-Use.git",
+        "https://github.com/kijai/ComfyUI-Florence2.git",
+        "https://github.com/1038lab/ComfyUI-RMBG.git",
+        "https://github.com/kijai/ComfyUI-IC-Light.git",
+        "https://github.com/cubiq/PuLID_ComfyUI.git",
+        "https://github.com/welltop-cn/ComfyUI-TeaCache.git"
+    ]
+    
+    for repo in custom_node_repos:
+        repo_name = repo.split('/')[-1].replace('.git', '')
+        repo_path = custom_nodes_path / repo_name
+        if not repo_path.exists():
+            print(f"Cloning {repo}...")
+            subprocess.run(f"git clone {repo} {repo_path}", shell=True, check=True)
+        else:
+            print(f"{repo_name} already exists, skipping clone.")
+    
+    # Install dependencies from requirements.txt files
+    print("Installing dependencies for custom nodes...")
+    for req_file in custom_nodes_path.glob("**/requirements.txt"):
+        print(f"Installing from {req_file}...")
+        subprocess.run(f"pip install -r {req_file}", shell=True, cwd=req_file.parent)
+    
+    # Install pre-identified dependencies for known issues
+    print("Installing additional dependencies for custom nodes...")
+    additional_deps = ["scikit-image", "omegaconf", "deepdiff", "insightface"]
+    for dep in additional_deps:
+        subprocess.run(f"pip install {dep}", shell=True)
+    
+    print("Custom nodes installation completed.")
+    custom_nodes_volume.commit() # Save the changes to the custom nodes volume
 
 # This lets you run the function from your command line.
 @app.local_entrypoint()
