@@ -309,8 +309,7 @@ def download_all_models():
                     hf_hub_download(
                         repo_id=model_info["repo_id"],
                         filename=filename,
-                        local_dir=Path("/tmp"),
-                        local_dir_use_symlinks=False, # Important for Modal Volumes
+                        local_dir=Path("/tmp")
                     )
                     # Check if the file exists before moving
                     if temp_download_path.exists():
